@@ -1,6 +1,6 @@
 function areaLineChart() {
     // set the dimensions and margins of the graph
-    var margin = {top: 10, right: 30, bottom: 30, left: 60},
+    var margin = {top: 10, right: 30, bottom: 40, left: 60},
     width = document.getElementById('bottom-container-right').clientWidth - margin.left - margin.right,
     height = document.getElementById('bottom-container-right').clientHeight - margin.top - margin.bottom;
 
