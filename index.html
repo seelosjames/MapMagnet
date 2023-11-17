@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+  <script src="https://unpkg.com/topojson@3"></script>
+  <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+  <script src="map.js" defer></script>
+  <script src="wordCloud.js" defer></script>
+  <script src="table.js" defer></script>
+  <script src="filter.js" defer></script>
+  <script src="areaLineChart.js" defer></script>
+  <script src="lineChart.js" defer></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #top-container {
+      height: 80%;
+      display: flex;
+    }
+
+    #left-column, #middle-column, #right-column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #left-column {
+      flex: 1; /* Take up 1/4 of the space */
+    }
+
+    #middle-column {
+      flex: 2; /* Take up 50% of the space */
+    }
+
+    #right-column {
+      flex: 1; /* Take up 1/4 of the space */
+    }
+
+    .box {
+      border: 1px solid #000;
+      margin: 5px;
+      padding: 10px;
+      box-sizing: border-box;
+      flex: 1; /* Each box takes up 50% of the column height */
+    }
+
+    #bottom-container {
+      height: 80%;
+      overflow: auto; /* Enable scrolling for the table */
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="top-container">
+
+    <div id="left-column" class="box">
+      <div id="top-container-left" class="box"></div>
+      <div id="bottom-container-left" class="box"></div>
+    </div>
+
+    <div id="middle-column" class="box"></div>
+
+    <div id="right-column" class="box">
+      <div id="top-container-right" class="box"></div>
+      <div id="bottom-container-right" class="box"></div>
+    </div>
+
+  </div>
+
+  <div id="bottom-container" class="box"></div>
+
+</body>
+</html>
