@@ -5,17 +5,19 @@ function filter() {
   const filterForm = document.createElement('form');
   filterBox.appendChild(filterForm);
 
-  // Create a text box for job title
-  const titleLabel = document.createElement('label');
-  titleLabel.textContent = 'Job Title:';
-  filterForm.appendChild(titleLabel);
 
-  const titleInput = document.createElement('input');
-  titleInput.type = 'text';
-  filterForm.appendChild(titleInput);
-  filterForm.appendChild(document.createElement('br')); // New line
+  // // Job Title
+  // const titleLabel = document.createElement('label');
+  // titleLabel.textContent = 'Job Title:';
+  // filterForm.appendChild(titleLabel);
 
-  // Create a drop-down for hiring department (formerly Company)
+  // const titleInput = document.createElement('input');
+  // titleInput.type = 'text';
+  // filterForm.appendChild(titleInput);
+  // filterForm.appendChild(document.createElement('br')); // New line
+
+
+  // Department
   const departmentLabel = document.createElement('label');
   departmentLabel.textContent = 'Hiring Department:';
   filterForm.appendChild(departmentLabel);
@@ -31,103 +33,139 @@ function filter() {
   filterForm.appendChild(departmentSelect);
   filterForm.appendChild(document.createElement('br')); // New line
 
-  // Create text boxes for min and max grade
-  const gradeLabel = document.createElement('label');
-  gradeLabel.textContent = 'Grade:';
-  filterForm.appendChild(gradeLabel);
 
-  const minGradeInput = document.createElement('input');
-  minGradeInput.type = 'text';
-  minGradeInput.placeholder = 'Min';
-  filterForm.appendChild(minGradeInput);
+  // // Grade
+  // const gradeLabel = document.createElement('label');
+  // gradeLabel.textContent = 'Grade:';
+  // filterForm.appendChild(gradeLabel);
 
-  const maxGradeInput = document.createElement('input');
-  maxGradeInput.type = 'text';
-  maxGradeInput.placeholder = 'Max';
-  filterForm.appendChild(maxGradeInput);
-  filterForm.appendChild(document.createElement('br')); // New line
+  // const minGradeInput = document.createElement('input');
+  // minGradeInput.type = 'text';
+  // minGradeInput.placeholder = 'Min';
+  // filterForm.appendChild(minGradeInput);
 
-  // Create labels and text boxes for min and max salary on the same line
+  // const maxGradeInput = document.createElement('input');
+  // maxGradeInput.type = 'text';
+  // maxGradeInput.placeholder = 'Max';
+  // filterForm.appendChild(maxGradeInput);
+  // filterForm.appendChild(document.createElement('br')); // New line
+
+
+  // Salary
   const salaryLabel = document.createElement('label');
   salaryLabel.textContent = 'Salary:';
   filterForm.appendChild(salaryLabel);
 
-  const minSalaryInput = document.createElement('input');
-  minSalaryInput.type = 'text';
-  minSalaryInput.placeholder = 'Min';
-  minSalaryInput.style.display = 'inline-block'; // Display inline-block
-  filterForm.appendChild(minSalaryInput);
+  const minSalarySelect = document.createElement('select');
+  filterForm.appendChild(minSalarySelect);
 
-  const maxSalaryInput = document.createElement('input');
-  maxSalaryInput.type = 'text';
-  maxSalaryInput.placeholder = 'Max';
-  maxSalaryInput.style.display = 'inline-block'; // Display inline-block
-  filterForm.appendChild(maxSalaryInput);
+  const maxSalarySelect = document.createElement('select');
+  filterForm.appendChild(maxSalarySelect);
+
+  const minSalary = 60000;
+  const maxSalary = 120000;
+  const increment = 5000;
+
+  for (let salary = minSalary; salary <= maxSalary; salary += increment) {
+    const option = document.createElement('option');
+    option.value = salary;
+    option.textContent = `$${salary.toLocaleString()}`;
+    minSalarySelect.appendChild(option);
+  }
+
+  for (let salary = maxSalary; salary >= minSalary; salary -= increment) {
+    const option = document.createElement('option');
+    option.value = salary;
+    option.textContent = `$${salary.toLocaleString()}`;
+    maxSalarySelect.appendChild(option);
+  }
+
   filterForm.appendChild(document.createElement('br')); // New line
 
-  // Create a drop-down for payscale
-  const payscaleLabel = document.createElement('label');
-  payscaleLabel.textContent = 'Payscale:';
-  filterForm.appendChild(payscaleLabel);
-
-  const payscaleSelect = document.createElement('select');
-  const payscaleOptions = ['Payscale 1', 'Payscale 2', 'Payscale 3'];
-  payscaleOptions.forEach((option) => {
-    const payscaleOption = document.createElement('option');
-    payscaleOption.value = option;
-    payscaleOption.text = option;
-    payscaleSelect.appendChild(payscaleOption);
-  });
-  filterForm.appendChild(payscaleSelect);
-  filterForm.appendChild(document.createElement('br')); // New line
-
-  // Create checkboxes for security clearance, telework, and relocation reimbursement
-  const checkboxLabels = ['Security Clearance', 'Telework', 'Relocation Reimbursement'];
-
+  // Security Clearance
   const securityClearanceLabel = document.createElement('label');
   securityClearanceLabel.textContent = "Security";
-
   const securityClearanceCheckbox = document.createElement('input');
   securityClearanceCheckbox.type = 'checkbox';
-
   filterForm.appendChild(securityClearanceLabel);
   filterForm.appendChild(securityClearanceCheckbox);
   filterForm.appendChild(document.createElement('br')); // New line
-
-  // Create a row of checkboxes for each day of the week for work schedule
-  const workScheduleLabel = document.createElement('label');
-  workScheduleLabel.textContent = 'Work Schedule:';
-  filterForm.appendChild(workScheduleLabel);
-  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-  daysOfWeek.forEach((day) => {
-    const dayLabel = document.createElement('label');
-    dayLabel.textContent = day;
-
-    const dayCheckbox = document.createElement('input');
-    dayCheckbox.type = 'checkbox';
-
-    filterForm.appendChild(dayLabel);
-    filterForm.appendChild(dayCheckbox);
-  });
+  // var securityState = False;
 
 
-  // Add Event Listeners
+  // Telework
+  const teleworkLabel = document.createElement('label');
+  teleworkLabel.textContent = "Telework";
+  const teleworkCheckbox = document.createElement('input');
+  teleworkCheckbox.type = 'checkbox';
+  filterForm.appendChild(teleworkLabel);
+  filterForm.appendChild(teleworkCheckbox);
+  filterForm.appendChild(document.createElement('br')); // New line
+
+
+  // Relocation Reimbursement
+  const relocationReimbursementLabel = document.createElement('label');
+  relocationReimbursementLabel.textContent = "Relocation";
+  const relocationReimbursementCheckbox = document.createElement('input');
+  relocationReimbursementCheckbox.type = 'checkbox';
+  filterForm.appendChild(relocationReimbursementLabel);
+  filterForm.appendChild(relocationReimbursementCheckbox);
+  filterForm.appendChild(document.createElement('br')); // New line
+
+
+  // // Schedule
+  // const workScheduleLabel = document.createElement('label');
+  // workScheduleLabel.textContent = 'Work Schedule:';
+  // filterForm.appendChild(workScheduleLabel);
+  // const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  // daysOfWeek.forEach((day) => {
+  //   const dayLabel = document.createElement('label');
+  //   dayLabel.textContent = day;
+
+  //   const dayCheckbox = document.createElement('input');
+  //   dayCheckbox.type = 'checkbox';
+
+  //   filterForm.appendChild(dayLabel);
+  //   filterForm.appendChild(dayCheckbox);
+  // });
+
 
   function onFilterChange() {
-    // Get the selected values from filter elements
+    // console.log()
 
-    console.log(securityClearanceCheckbox.value)
     const selectedFilters = {
       department: departmentSelect.value,
-      security_clearance: securityClearanceCheckbox.value
+      minSalary: parseInt(minSalarySelect.value, 10),
+      maxSalary: parseInt(maxSalarySelect.value, 10),
+      securityClearance: securityClearanceCheckbox.checked,
+      telework: teleworkCheckbox.checked,
+      relocationReimbursement: relocationReimbursementCheckbox.checked,
     };
 
-    // Call the filterJobs function with the selected filters
     filterJobs(selectedFilters);
   }
-  console.log(securityClearanceCheckbox.value)
+
+  function salaryChange() {
+    // Get the selected values from dropdowns
+    const selectedMinSalary = parseInt(minSalarySelect.value, 10);
+    const selectedMaxSalary = parseInt(maxSalarySelect.value, 10);
+
+    // Ensure min salary is not larger than max salary and vice versa
+    if (selectedMinSalary > selectedMaxSalary) {
+      alert('Min salary cannot be larger than max salary.');
+      return;
+    } else {
+      onFilterChange();
+    }
+  }
+
+  // Add Event Listeners to the Filters
   departmentSelect.addEventListener('change', onFilterChange);
+  minSalarySelect.addEventListener('change', salaryChange);
+  maxSalarySelect.addEventListener('change', salaryChange);
   securityClearanceCheckbox.addEventListener('change', onFilterChange);
+  teleworkCheckbox.addEventListener('change', onFilterChange);
+  relocationReimbursementCheckbox.addEventListener('change', onFilterChange);
 
 }

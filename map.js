@@ -1,7 +1,7 @@
 function map() {
     var svg = d3.select("#middle-column").append("svg")
-    .attr("width", "100%")
-    .attr("height", "100%")
+    .attr("width", document.getElementById('middle-column').clientWidth)
+    .attr("height", document.getElementById('middle-column').clientHeight)
 
     var path = d3.geoPath();
     
@@ -20,5 +20,3 @@ function map() {
           .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
     });
 }
-
-map();

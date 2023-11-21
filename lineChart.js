@@ -4,10 +4,8 @@ function lineChart() {
     var width = document.getElementById('bottom-container-right').clientWidth - margin.left - margin.right;
     var height = document.getElementById('bottom-container-right').clientHeight - margin.top - margin.bottom;
     var data = [];
-    var x, y;
+    var x, xAxis, y, yAxis;
     var svg;
-
-
 
     //Read the data
     d3.json("test_data/data.json").then(
@@ -24,58 +22,55 @@ function lineChart() {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            // Add X axis
+            // Create X axis
             x = d3.scaleTime()
             .domain([
                 new Date(data[0].year, 0, 1), 
                 new Date(data[data.length - 1].year, 0, 1)
             ])
-            .range([ 0, width ]);
+            .range([ 1, width ]);
+            xAxis = d3.axisBottom().scale(x);
             svg.append("g") 
             .attr("transform", "translate(0," + height + ")")
-            .attr("class","myXaxis")
-            .call(d3.axisBottom(x));
+            .attr("class","myXaxis");
 
-            // Add Y axis
-            y = d3.scaleLinear()
-            .domain([d3.min(data, 
-                function(d) {
-                    return d.jobs.length
-                }
-            ) - 10, d3.max(data, 
-                function(d) {
-                    return d.jobs.length
-                }
-            ) + 10])
-            .range([ height, 0 ]);
+            // Create Y axis
+            y = d3.scaleLinear().range([ height, 0 ]);
+            yAxis = d3.axisLeft().scale(y);
             svg.append("g")
-            .attr("class","myYaxis")
-            .call(d3.axisLeft(y));
+            .attr("class","myYaxis");
 
             update(data)
         }
     );
 
     function update(dataset) {
+
+        // Update X axis:
+        svg.selectAll(".myXaxis")
+        .transition()
+        .duration(1000)
+        .call(xAxis);
+
         // Update Y axis
         y.domain([d3.min(dataset, 
             function(d) {
                 return d.jobs.length
             }
-        ) - 10, d3.max(dataset, 
+        ), d3.max(dataset, 
             function(d) {
                 return d.jobs.length
             }
-        ) + 10])
-        svg.selectAll(".myYaxis").transition()
-        .duration(3000)
-        .call(y);
-      
+        )])
+        svg.selectAll(".myYaxis")
+        .transition()
+        .duration(1000)
+        .call(yAxis);
+        
         // Create a update selection: bind to the new data
-        var u = svg.selectAll(".lineTest")
-          .data([dataset]);
-      
-        // UpdatE the line
+        var u = svg.selectAll(".lineTest").data([dataset]);
+        
+        // Update the line
         u
         .enter()
         .append("path")
@@ -89,19 +84,15 @@ function lineChart() {
         .attr("fill", "none")
         .attr("stroke", "steelblue")
         .attr("stroke-width", 2.5)
-      }
+    }
     
     this.filterJobs = function(filters) {
-        console.log(filters)
         var temp = [];
 
         data.forEach(element => {
             temp.push({"year": element.year, "jobs": element.jobs.filter(job => {
                 return (
-                    (!filters.title || job.title === filters.title) &&
                     (!filters.department || job.department === filters.department || filters.department === 'None') &&
-                    (!filters.minGrade || job.grade >= filters.minGrade) &&
-                    (!filters.maxGrade || job.grade <= filters.maxGrade) &&
                     (!filters.minSalary || job.salary >= filters.minSalary) &&
                     (!filters.maxSalary || job.salary <= filters.maxSalary) &&
                     (!filters.securityClearance || job.securityClearance === filters.securityClearance) &&
@@ -110,6 +101,7 @@ function lineChart() {
                 );
             })})
         });
+        
         update(temp);
     };
 }

@@ -4,15 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  
-  <!-- <script src="//d3js.org/topojson.v3.min.js"></script> -->
-  <!-- <script src="https://d3js.org/topojson.v2.min.js"></script> -->
-  
-  <!-- <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script> -->
-  <!-- <script src="https://unpkg.com/topojson@3"></script> -->
-  <!-- <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+  <script src="https://unpkg.com/topojson"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
  
   <script src="map.js"></script>
   <script src="wordCloud.js"></script>
@@ -115,15 +111,16 @@
     
     function filterJobs(filters) {
       lc.filterJobs(filters);
+      // alc.filterJobs(filters);
     }
 
 
     let f = filter();
+    let wc = wordCloud();
+    let m = map();
+    let t = table();
+    let alc = areaLineChart();
     let lc = lineChart();
-    // let wc = wordCloud();
-    // let m = map();
-    // let t = table();
-    // let alc = areaLineChart();
   </script>
 
 </body>
