@@ -1,4 +1,4 @@
-function fillWordCloudBox() {
+function wordCloud() {
   
     // Your code to create a D3 word cloud goes here
     // List of words
@@ -49,5 +49,3 @@ function fillWordCloudBox() {
             .text(function(d) { return d.text; });
   }
 }
-
-fillWordCloudBox();
