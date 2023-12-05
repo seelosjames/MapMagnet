@@ -267,7 +267,9 @@
       data = await filterJobsByCategoryCodes(data, categories);
       title = "TITLE" // Get the text in the title text box
       data = await filterJobsByPositionTitle(data, title);
-      
+
+
+      data = await data.toArray()
       await updateWordCloud(data);
       // await anotherGraphUpdate();
     }
