@@ -232,10 +232,24 @@
       }
     }
 
-    async function filterJobsByCategoryCodes(codes) {
-      db.yourTableName.filter(item => {
+    async function filterJobsByCategoryCodes(data, codes) {
+      return data.filter(item => {
           // Check if any JobCategory Code matches the target codes
           return item.JobCategory.some(category => codes.includes(category.Code));
+      })
+    }
+
+    async function filterJobsByPositionTitle(data, title) {
+      return data.filter(item => {
+          // Check if PositionTitle contains the search string
+          return item.PositionTitle.toLowerCase().includes(title.toLowerCase());
+      })
+    }
+
+    async function filterJobsByMinSalary(data, minSalary) {
+      data.filter(item => {
+          // Check if any PositionRemuneration object has MinimumRange greater than minSalary
+          return item.PositionRemuneration.some(remuneration => remuneration.MinimumRange > minSalary);
       }).toArray()
           .then(filteredData => {
               // Process the filtered data
@@ -247,16 +261,15 @@
     }
 
     async function applyFilters() {
-      categories = [] // Get the list of selected categories
-      await filterJobsByCategoryCodes(categories);
-      // await anotherFilter()
-      await updateWordCloud();
-      // await anotherGraphUpdate();
-    }
+      data = db.myDataStore;
 
-    function filterJobs(filters) {
-      lc.filterJobs(filters);
-      // alc.filterJobs(filters);
+      categories = [] // Get the list of selected categories
+      data = await filterJobsByCategoryCodes(data, categories);
+      title = "TITLE" // Get the text in the title text box
+      data = await filterJobsByPositionTitle(data, title);
+      
+      await updateWordCloud(data);
+      // await anotherGraphUpdate();
     }
 
     // If you're gonna click a button to apply filters, then
