@@ -209,7 +209,7 @@
           // Handle completion of the request
           xhr.onload = async () => {
               if (xhr.status === 200) {
-                  const data = xhr.response;
+                  data = xhr.response;
 
                   // Save data to local storage
                   await db.transaction('rw', db.myDataStore, async () => {
