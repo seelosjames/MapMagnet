@@ -1,35 +1,59 @@
-function table() {
-  const tableContainer = document.getElementById('bottom-container');
+function table(data) {
 
-  const table = document.createElement('table');
-  tableContainer.appendChild(table);
+  var table;
+  var dataset = [];
 
-  const tableHeader = table.createTHead();
-  const headerRow = tableHeader.insertRow();
-  const headers = ['Job Title', 'Employer', 'Location', 'Min Salary', 'Max Salary', 'Telework', 'Reimbursement', 'Schedule', 'URL'];
+  updateTable(data);
 
-  headers.forEach((headerText) => {
-    const th = document.createElement('th');
-    th.textContent = headerText;
-    headerRow.appendChild(th);
-  });
+  function formatTableData(data) {
+    var tabledata = [];
 
-  const tableBody = table.createTBody();
+    data.forEach(d => (
+      tabledata.push(
+        {
+          "ID": d.id,
+          "Position Title": d.PositionTitle,
+          "Department": d.DepartmentName,
+          "Location": d.PositionLocationDisplay,
+          "Min Salary": parseFloat(d.PositionRemuneration[0].MinimumRange).toLocaleString('en-US', {style: 'currency', currency: 'USD'}),
+          "Max Salary": parseFloat(d.PositionRemuneration[0].MaximumRange).toLocaleString('en-US', {style: 'currency', currency: 'USD'}),
+          "Schedule": d.PositionSchedule[0].Name,
+          "Open Date": new Date(d.PositionStartDate).toLocaleDateString(),
+          "Closing Date": new Date(d.PositionEndDate).toLocaleDateString(),
+          "Travel": d.TravelPercentage,
+          "Remote": d.RemoteIndicator ? "True" : "False",
+          "Relocation": d.Relocation,
+          "Telework": d.TeleworkEligible ? "True" : "False",
+          "URL": d.PositionURI
+        }
+      )
+    ));
+    
+    return tabledata;
 
-  // Dummy data for the table
-  const data = [
-    ['Software Engineer', 'ABC Inc.', 'City A', '$80,000', '$120,000', 'Yes', 'Yes', 'Full-time', 'https://example.com/job1'],
-    ['Data Analyst', 'XYZ Corp.', 'City B', '$60,000', '$90,000', 'No', 'No', 'Part-time', 'https://example.com/job2'],
-    ['UX Designer', '123 Company', 'City C', '$70,000', '$110,000', 'Yes', 'Yes', 'Flexible', 'https://example.com/job3'],
-    ['Project Manager', 'LMN Ltd.', 'City D', '$90,000', '$130,000', 'No', 'Yes', 'Full-time', 'https://example.com/job4'],
-    ['Sales Representative', 'EFG Co.', 'City E', '$50,000', '$80,000', 'Yes', 'No', 'Commission-based', 'https://example.com/job5'],
-  ];
+  }
 
-  data.forEach((rowData) => {
-    const row = tableBody.insertRow();
-    rowData.forEach((cellData) => {
-      const cell = row.insertCell();
-      cell.textContent = cellData;
+
+  // Function to update the word cloud with new data
+  function updateTable(newData) {
+    console.log("TABLE")
+    console.log(newData)
+    dataset = formatTableData(newData);
+    console.log(this.tabl);
+    if(table && typeof table.destroy === 'function'){ 
+      table.destroy();
+      console.log("destroyed");
+    }
+    table = new Tabulator("#bottom-container", {
+      data: dataset, //assign data to table
+      autoColumns: true, //create columns from data field names
     });
-  });
+  
+  }
+
+  // Expose the updateWordCloud function if you want to update the word cloud externally
+  this.updateTable = updateTable;
+
 }
+
+

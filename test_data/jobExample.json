@@ -1,0 +1,109 @@
+[
+  {
+    "id":"585167300",
+    "PositionTitle":"Information and Arts Family",
+    "PositionURI":"https://www.usajobs.gov:443/GetJob/ViewDetails/585167300",
+    "PositionLocationDisplay":"Location Negotiable After Selection, United States",
+    "PositionLocation":[
+      {
+        "LocationName":"Albuquerque, New Mexico",
+        "CountryCode":"United States",
+        "CountrySubDivisionCode":"New Mexico",
+        "CityName":"Albuquerque, New Mexico",
+        "Longitude":-106.649,"Latitude":35.0842
+      },
+      {
+        "LocationName":"Oklahoma City, Oklahoma",
+        "CountryCode":"United States",
+        "CountrySubDivisionCode":"Oklahoma",
+        "CityName":"Oklahoma City, Oklahoma",
+        "Longitude":-97.52033,
+        "Latitude":35.472004
+      },
+      {
+        "LocationName":"Portland, Oregon",
+        "CountryCode":"United States",
+        "CountrySubDivisionCode":"Oregon",
+        "CityName":"Portland, Oregon",
+        "Longitude":-122.67563,
+        "Latitude":45.511795
+      },
+      {
+        "LocationName":"Kansas City, Missouri",
+        "CountryCode":"United States",
+        "CountrySubDivisionCode":"Missouri",
+        "CityName":"Kansas City, Missouri",
+        "Longitude":-94.58306,
+        "Latitude":39.10296
+      },
+      {
+        "LocationName":"Chicago, Illinois",
+        "CountryCode":"United States",
+        "CountrySubDivisionCode":"Illinois",
+        "CityName":"Chicago, Illinois",
+        "Longitude":-87.63241,
+        "Latitude":41.88415
+      },
+      {
+        "LocationName":"Denver, Colorado",
+        "CountryCode":"United States",
+        "CountrySubDivisionCode":"Colorado",
+        "CityName":"Denver, Colorado",
+        "Longitude":-104.992256,
+        "Latitude":39.74001
+      },
+      {
+        "LocationName":"Washington, District of Columbia",
+        "CountryCode":"United States",
+        "CountrySubDivisionCode":"District of Columbia",
+        "CityName":"Washington, District of Columbia",
+        "Longitude":-77.032,
+        "Latitude":38.8904
+      },
+      {
+        "LocationName":"Atlanta, Georgia","CountryCode":"United States","CountrySubDivisionCode":"Georgia","CityName":"Atlanta, Georgia","Longitude":-84.39111,"Latitude":33.748314},{"LocationName":"Minneapolis, Minnesota","CountryCode":"United States","CountrySubDivisionCode":"Minnesota","CityName":"Minneapolis, Minnesota","Longitude":-93.26493,"Latitude":44.979034},{"LocationName":"Seattle, Washington","CountryCode":"United States","CountrySubDivisionCode":"Washington","CityName":"Seattle, Washington","Longitude":-122.32945,"Latitude":47.60358},{"LocationName":"Los Angeles, California","CountryCode":"United States","CountrySubDivisionCode":"California","CityName":"Los Angeles, California","Longitude":-118.245,"Latitude":34.0535},{"LocationName":"Phoenix, Arizona","CountryCode":"United States","CountrySubDivisionCode":"Arizona","CityName":"Phoenix, Arizona","Longitude":-112.075775,"Latitude":33.44826},{"LocationName":"Indianapolis, Indiana","CountryCode":"United States","CountrySubDivisionCode":"Indiana","CityName":"Indianapolis, Indiana","Longitude":-86.14996,"Latitude":39.76691},{"LocationName":"Miami, Florida","CountryCode":"United States","CountrySubDivisionCode":"Florida","CityName":"Miami, Florida","Longitude":-80.23742,"Latitude":25.728985},{"LocationName":"New York, New York","CountryCode":"United States","CountrySubDivisionCode":"New York","CityName":"New York, New York","Longitude":-74.0071,"Latitude":40.7146},{"LocationName":"New Orleans, Louisiana","CountryCode":"United States","CountrySubDivisionCode":"Louisiana","CityName":"New Orleans, Louisiana","Longitude":-90.07771,"Latitude":29.95369},{"LocationName":"Salt Lake City, Utah","CountryCode":"United States","CountrySubDivisionCode":"Utah","CityName":"Salt Lake City, Utah","Longitude":-111.88823,"Latitude":40.75952},{"LocationName":"San Francisco, California","CountryCode":"United States","CountrySubDivisionCode":"California","CityName":"San Francisco, California","Longitude":-122.4196,"Latitude":37.7771},{"LocationName":"Boston, Massachusetts","CountryCode":"United States","CountrySubDivisionCode":"Massachusetts","CityName":"Boston, Massachusetts","Longitude":-71.0567,"Latitude":42.358635},{"LocationName":"Austin, Texas","CountryCode":"United States","CountrySubDivisionCode":"Texas","CityName":"Austin, Texas","Longitude":-97.743,"Latitude":30.2676
+        }
+    ],
+    "PositionSchedule":[
+      {
+        "Name":"",
+        "Code":"6"
+      }
+    ],
+    "OrganizationName":"Department of the Air Force - Agency Wide",
+    "DepartmentName":"Department of the Air Force",
+    "JobCategory":[
+      {
+        "Name":"General Arts And Information",
+        "Code":"1001"
+      },{
+        "Name":"Museum Curator",
+        "Code":"1015"
+      },{
+        "Name":"Public Affairs",
+        "Code":"1035"
+      },{
+        "Name":"Language Specialist",
+        "Code":"1040"
+      },{
+        "Name":"Visual Information",
+        "Code":"1084"
+      }
+    ],
+    "PositionRemuneration":[
+      {
+        "MinimumRange":"20172.0",
+        "MaximumRange":"146757.0",
+        "RateIntervalCode":"PA",
+        "Description":"Per Year"
+      }
+    ],
+    "PositionStartDate":"2022-11-30T00:00:00.0000",
+    "PositionEndDate":"2023-11-29T23:59:59.9970",
+    "TravelCode":"0",
+    "TeleworkEligible":false,
+    "RemoteIndicator":false,
+    "Relocation":"False",
+    "Tokens":["art","language","curator","affair","general","family","museum","specialist","visual","additional","air","public","force","hire","please","opportunity","information","click","direct"]
+  }
+]
