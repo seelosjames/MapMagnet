@@ -34,23 +34,6 @@ function filter() {
   filterForm.appendChild(document.createElement('br')); // New line
 
 
-  // // Grade
-  // const gradeLabel = document.createElement('label');
-  // gradeLabel.textContent = 'Grade:';
-  // filterForm.appendChild(gradeLabel);
-
-  // const minGradeInput = document.createElement('input');
-  // minGradeInput.type = 'text';
-  // minGradeInput.placeholder = 'Min';
-  // filterForm.appendChild(minGradeInput);
-
-  // const maxGradeInput = document.createElement('input');
-  // maxGradeInput.type = 'text';
-  // maxGradeInput.placeholder = 'Max';
-  // filterForm.appendChild(maxGradeInput);
-  // filterForm.appendChild(document.createElement('br')); // New line
-
-
   // Salary
   const salaryLabel = document.createElement('label');
   salaryLabel.textContent = 'Salary:';
@@ -62,7 +45,7 @@ function filter() {
   const maxSalarySelect = document.createElement('select');
   filterForm.appendChild(maxSalarySelect);
 
-  const minSalary = 60000;
+  const minSalary = 0;
   const maxSalary = 120000;
   const increment = 5000;
 
@@ -83,12 +66,12 @@ function filter() {
   filterForm.appendChild(document.createElement('br')); // New line
 
   // Security Clearance
-  const securityClearanceLabel = document.createElement('label');
-  securityClearanceLabel.textContent = "Security";
-  const securityClearanceCheckbox = document.createElement('input');
-  securityClearanceCheckbox.type = 'checkbox';
-  filterForm.appendChild(securityClearanceLabel);
-  filterForm.appendChild(securityClearanceCheckbox);
+  const remoteLabel = document.createElement('label');
+  remoteLabel.textContent = "Remote";
+  const remoteCheckbox = document.createElement('input');
+  remoteCheckbox.type = 'checkbox';
+  filterForm.appendChild(remoteLabel);
+  filterForm.appendChild(remoteCheckbox);
   filterForm.appendChild(document.createElement('br')); // New line
   // var securityState = False;
 
@@ -124,22 +107,6 @@ function filter() {
 
 
 
-  // // Schedule
-  // const workScheduleLabel = document.createElement('label');
-  // workScheduleLabel.textContent = 'Work Schedule:';
-  // filterForm.appendChild(workScheduleLabel);
-  // const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-  // daysOfWeek.forEach((day) => {
-  //   const dayLabel = document.createElement('label');
-  //   dayLabel.textContent = day;
-
-  //   const dayCheckbox = document.createElement('input');
-  //   dayCheckbox.type = 'checkbox';
-
-  //   filterForm.appendChild(dayLabel);
-  //   filterForm.appendChild(dayCheckbox);
-  // });
 
 
   function onFilterChange() {
@@ -149,7 +116,7 @@ function filter() {
       department: departmentSelect.value,
       minSalary: parseInt(minSalarySelect.value, 10),
       maxSalary: parseInt(maxSalarySelect.value, 10),
-      securityClearance: securityClearanceCheckbox.checked,
+      remote: remoteCheckbox.checked,
       telework: teleworkCheckbox.checked,
       relocationReimbursement: relocationReimbursementCheckbox.checked,
     };
@@ -175,7 +142,7 @@ function filter() {
   departmentSelect.addEventListener('change', onFilterChange);
   minSalarySelect.addEventListener('change', salaryChange);
   maxSalarySelect.addEventListener('change', salaryChange);
-  securityClearanceCheckbox.addEventListener('change', onFilterChange);
+  remoteCheckbox.addEventListener('change', onFilterChange);
   teleworkCheckbox.addEventListener('change', onFilterChange);
   relocationReimbursementCheckbox.addEventListener('change', onFilterChange);
 

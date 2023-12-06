@@ -35,13 +35,12 @@ function table(data) {
 
   // Function to update the word cloud with new data
   function updateTable(newData) {
-    console.log("TABLE")
-    console.log(newData)
     dataset = formatTableData(newData);
+    
     if(table && typeof table.destroy === 'function'){ 
       table.destroy();
-      console.log("destroyed");
     }
+
     table = new Tabulator("#bottom-container", {
       data: dataset,             //load row data from array
       layout: "fitColumns",      //fit columns to width of table
