@@ -24,7 +24,7 @@ function table(data) {
           "Remote": d.RemoteIndicator ? "True" : "False",
           "Relocation": d.Relocation,
           "Telework": d.TeleworkEligible ? "True" : "False",
-          "URL": d.PositionURI
+          "URL": "<a target='_blank' rel='noopener noreferrer' href='"+d.PositionURI+"'>"+d.PositionURI+"</a>"
         }
       )
     ));
@@ -33,22 +33,48 @@ function table(data) {
 
   }
 
-
   // Function to update the word cloud with new data
   function updateTable(newData) {
     console.log("TABLE")
     console.log(newData)
     dataset = formatTableData(newData);
-    console.log(this.tabl);
     if(table && typeof table.destroy === 'function'){ 
       table.destroy();
       console.log("destroyed");
     }
     table = new Tabulator("#bottom-container", {
-      data: dataset, //assign data to table
-      autoColumns: true, //create columns from data field names
+      data: dataset,             //load row data from array
+      layout: "fitColumns",      //fit columns to width of table
+      responsiveLayout: "hide",  //hide columns that don't fit on the table
+      addRowPos: "top",          //when adding a new row, add it to the top of the table
+      history: true,             //allow undo and redo actions on the table
+      pagination: "local",       //paginate the data
+      paginationSize: 5,         //allow 7 rows per page of data
+      paginationCounter: "rows", //display count of paginated rows in footer
+      movableColumns: true,
+      initialSort:[              //set the initial sort order of the data
+          {column:"id", dir:"asc"},
+      ],
+      columnDefaults:{
+          tooltip:true,         //show tool tips on cells
+      },
+      columns:[                 //define the table columns
+        {title:"ID", field:"ID", editor:false},
+        {title:"Position Title", field:"Position Title", editor:false},
+        {title:"Department", field:"Department", editor:false},
+        {title:"Location", field:"Location", editor:false},
+        {title:"Min Salary", field:"Min Salary", editor:false},
+        {title:"Max Salary", field:"Max Salary", editor:false},
+        {title:"Schedule", field:"Schedule", editor:false},
+        {title:"Open Date", field:"Open Date", editor:false, sorter:"date"},
+        {title:"Closing Date", field:"Closing Date", editor:false, sorter:"date"},
+        {title:"Travel", field:"Travel", editor:false},
+        {title:"Remote", field:"Remote", editor:false, sorter:"boolean"},
+        {title:"Telework", field:"Telework", editor:false, sorter:"boolean"},
+        {title:"Relocation", field:"Relocation", editor:false, sorter:"boolean"},
+        {title:"URL", field:"URL", editor:false, formatter:"html"},
+      ],
     });
-  
   }
 
   // Expose the updateWordCloud function if you want to update the word cloud externally
