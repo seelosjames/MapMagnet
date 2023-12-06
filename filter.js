@@ -113,6 +113,17 @@ function filter() {
   filterForm.appendChild(document.createElement('br')); // New line
 
 
+  var myButton = document.createElement("button");
+  myButton.id = "mybutton";
+  myButton.textContent = "Click me!";
+  myButton.addEventListener("click", function() {
+    // Your code to be executed when the button is clicked
+    alert("Button Clicked!");
+  });
+  filterForm.appendChild(myButton);
+
+
+
   // // Schedule
   // const workScheduleLabel = document.createElement('label');
   // workScheduleLabel.textContent = 'Work Schedule:';
@@ -142,8 +153,8 @@ function filter() {
       telework: teleworkCheckbox.checked,
       relocationReimbursement: relocationReimbursementCheckbox.checked,
     };
-
     filterJobs(selectedFilters);
+    applyFilters();
   }
 
   function salaryChange() {

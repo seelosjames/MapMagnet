@@ -11,6 +11,9 @@
   <script src="https://unpkg.com/topojson"></script>
   <script src="https://d3js.org/topojson.v2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dexie@3.0.3/dist/dexie.min.js"></script>
+
+  <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
+  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
  
   <script src="map.js"></script>
   <script src="wordCloud.js"></script>
@@ -157,6 +160,11 @@
       wc.updateWordCloud(wordCloudData);
     }
 
+    async function updateTable(data) {
+      data = await db.myDataStore.toArray();
+      t.updateTable(data);
+    }
+
     async function checkDataAndLoad() {
       try {
         const storedData = await db.myDataStore.toArray();
@@ -166,11 +174,13 @@
           console.log('Using locally stored data:', storedData[0]);
           data = await db.myDataStore.toArray();
           updateWordCloud(data);
+          updateTable(data);
         } else {
           // Data is not present, fetch from the API
           await fetchDataFromAPI();
           data = await db.myDataStore.toArray();
           updateWordCloud(data);
+          updateTable(data);
         }
       } catch (error) {
         console.error('Error checking data:', error);
@@ -209,6 +219,7 @@
                   console.log('Data fetched and stored:', data);
                   data = await db.myDataStore.toArray();
                   updateWordCloud(data);
+                  updateTable(data);
                   hideLoadingModal();
               } else {
                   console.error('Fetch error:', xhr.statusText);
@@ -272,22 +283,28 @@
       if (title !== "")
         data = await filterJobsByPositionTitle(data, title);
 
-      // THIS GOES AFTER FILTERING
-      data = await data.toArray()
+      data = await data.toArray();
+      console.log("FILTER");
       await updateWordCloud(data);
+      await updateTable(data);
       // await anotherGraphUpdate();
     }
 
+    function filterJobs(filters) {
+      lc.filterJobs(filters);
+      alc.filterJobs(filters);
+    }
+
     // If you're gonna click a button to apply filters, then
-    document.getElementById('myButton').addEventListener('click', async () => {
-      // Call the async function when the button is clicked
-      await applyFilters();
-    });
+    // document.getElementById('myButton').addEventListener('click', async () => {
+    //   // Call the async function when the button is clicked
+    //   await applyFilters();
+    // });
 
     var wc = new wordCloud([]);
     f = filter();
     m = new map();
-    t = new table();
+    t = new table([]);
     alc = new areaLineChart();
     lc = new lineChart();
     checkDataAndLoad()
