@@ -263,12 +263,16 @@
     async function applyFilters() {
       data = db.myDataStore;
 
+      // APPLY THE FILTERS
       categories = [] // Get the list of selected categories
-      data = await filterJobsByCategoryCodes(data, categories);
+      if (categories.length > 0)
+        data = await filterJobsByCategoryCodes(data, categories);
+
       title = "TITLE" // Get the text in the title text box
-      data = await filterJobsByPositionTitle(data, title);
+      if (title !== "")
+        data = await filterJobsByPositionTitle(data, title);
 
-
+      // THIS GOES AFTER FILTERING
       data = await data.toArray()
       await updateWordCloud(data);
       // await anotherGraphUpdate();
