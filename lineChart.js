@@ -93,6 +93,7 @@ function lineChart() {
             temp.push({"year": element.year, "jobs": element.jobs.filter(job => {
                 return (
                     (!filters.department || job.department === filters.department || filters.department === 'None') &&
+                    (!filters.location || job.location === filters.location || filters.location === 'None') &&
                     (!filters.minSalary || job.salary >= filters.minSalary) &&
                     (!filters.maxSalary || job.salary <= filters.maxSalary) &&
                     (!filters.securityClearance || job.securityClearance === filters.securityClearance) &&

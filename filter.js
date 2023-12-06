@@ -19,11 +19,13 @@ function filter() {
 
   // Department
   const departmentLabel = document.createElement('label');
-  departmentLabel.textContent = 'Hiring Department:';
+  departmentLabel.textContent = 'Department: ';
   filterForm.appendChild(departmentLabel);
 
   const departmentSelect = document.createElement('select');
-  const departmentOptions = ['None', 'Department 1', 'Department 2', 'Department 3'];
+  const departmentOptions = ['None', 'Court Services and Offender Supervision Agency for DC', 'Department of Agriculture', 'Department of Commerce', 'Department of Defense', 'Department of Energy', 'Department of Health and Human Services', 'Department of Homeland Security'
+  , 'Department of Housing and Urban Development', 'Department of Justice', 'Department of Labor', 'Department of State', 'Department of Air Force', 'Department of Army', 'Department of Interior', 'Department of Navy', 'Department of Treasury', 'Department of Transportation', 'Department of Veterans Affairs'
+  , 'General Services Administration', 'Judicial Branch', 'Legislative Branch', 'NASA', 'National Foundation on the Arts and the Humanities', 'Other Agencies and Independent Organizations'];
   departmentOptions.forEach((option) => {
     const departmentOption = document.createElement('option');
     departmentOption.value = option;
@@ -34,9 +36,64 @@ function filter() {
   filterForm.appendChild(document.createElement('br')); // New line
 
 
+  // Location
+  const locationLabel = document.createElement('label');
+  locationLabel.textContent = 'Location: ';
+  filterForm.appendChild(locationLabel);
+
+  const locationSelect = document.createElement('select');
+  const locationOptions = ["None","Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana",
+    "Iowa","Kansas","Kentucky","Louisiana", "Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada",
+    "New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina",
+    "South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"
+  ];
+  locationOptions.forEach((option) => {
+    const locationOption = document.createElement('option');
+    locationOption.value = option;
+    locationOption.text = option;
+    locationSelect.appendChild(locationOption);
+  });
+  filterForm.appendChild(locationSelect);
+  filterForm.appendChild(document.createElement('br')); // New line
+
+
+  // Schedule
+  const scheduleLabel = document.createElement('label');
+  scheduleLabel.textContent = 'Schedule: ';
+  filterForm.appendChild(scheduleLabel);
+
+  const scheduleSelect = document.createElement('select');
+  const scheduleOptions = ["None", "Full-time", "Part-time", "Shift work", "Intermittent", "Job sharing", "Multiple schedules"];
+  scheduleOptions.forEach((option) => {
+    const scheduleOption = document.createElement('option');
+    scheduleOption.value = option;
+    scheduleOption.text = option;
+    scheduleSelect.appendChild(scheduleOption);
+  });
+  filterForm.appendChild(scheduleSelect);
+  filterForm.appendChild(document.createElement('br')); // New line
+
+
+    // Travel
+    const travelLabel = document.createElement('label');
+    travelLabel.textContent = 'Travel: ';
+    filterForm.appendChild(travelLabel);
+  
+    const travelSelect = document.createElement('select');
+    const travelOptions = ["None", "Not required", "Occasional travel", "25% or less", "50% or less", "75% or less", "76% or greater"];
+    travelOptions.forEach((option) => {
+      const travelOption = document.createElement('option');
+      travelOption.value = option;
+      travelOption.text = option;
+      travelSelect.appendChild(travelOption);
+    });
+    filterForm.appendChild(travelSelect);
+    filterForm.appendChild(document.createElement('br')); // New line
+
+
   // Salary
   const salaryLabel = document.createElement('label');
-  salaryLabel.textContent = 'Salary:';
+  salaryLabel.textContent = 'Salary: ';
   filterForm.appendChild(salaryLabel);
 
   const minSalarySelect = document.createElement('select');
@@ -67,7 +124,7 @@ function filter() {
 
   // Security Clearance
   const remoteLabel = document.createElement('label');
-  remoteLabel.textContent = "Remote";
+  remoteLabel.textContent = "Remote: ";
   const remoteCheckbox = document.createElement('input');
   remoteCheckbox.type = 'checkbox';
   filterForm.appendChild(remoteLabel);
@@ -78,7 +135,7 @@ function filter() {
 
   // Telework
   const teleworkLabel = document.createElement('label');
-  teleworkLabel.textContent = "Telework";
+  teleworkLabel.textContent = "Telework: ";
   const teleworkCheckbox = document.createElement('input');
   teleworkCheckbox.type = 'checkbox';
   filterForm.appendChild(teleworkLabel);
@@ -88,7 +145,7 @@ function filter() {
 
   // Relocation Reimbursement
   const relocationReimbursementLabel = document.createElement('label');
-  relocationReimbursementLabel.textContent = "Relocation";
+  relocationReimbursementLabel.textContent = "Relocation: ";
   const relocationReimbursementCheckbox = document.createElement('input');
   relocationReimbursementCheckbox.type = 'checkbox';
   filterForm.appendChild(relocationReimbursementLabel);
@@ -114,6 +171,7 @@ function filter() {
 
     const selectedFilters = {
       department: departmentSelect.value,
+      location: locationSelect.value,
       minSalary: parseInt(minSalarySelect.value, 10),
       maxSalary: parseInt(maxSalarySelect.value, 10),
       remote: remoteCheckbox.checked,
@@ -140,6 +198,7 @@ function filter() {
 
   // Add Event Listeners to the Filters
   departmentSelect.addEventListener('change', onFilterChange);
+  locationSelect.addEventListener('change', onFilterChange);
   minSalarySelect.addEventListener('change', salaryChange);
   maxSalarySelect.addEventListener('change', salaryChange);
   remoteCheckbox.addEventListener('change', onFilterChange);
