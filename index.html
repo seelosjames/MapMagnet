@@ -165,6 +165,11 @@
       t.updateTable(data);
     }
 
+    async function updateMap(data) {
+      data = await db.myDataStore.toArray();
+      m.updateMap(data);
+    }
+
     async function checkDataAndLoad() {
       try {
         const storedData = await db.myDataStore.toArray();
@@ -175,12 +180,14 @@
           data = await db.myDataStore.toArray();
           updateWordCloud(data);
           updateTable(data);
+          updateMap(data);
         } else {
           // Data is not present, fetch from the API
           await fetchDataFromAPI();
           data = await db.myDataStore.toArray();
           updateWordCloud(data);
           updateTable(data);
+          updateMap(data);
         }
       } catch (error) {
         console.error('Error checking data:', error);
@@ -220,6 +227,7 @@
                   data = await db.myDataStore.toArray();
                   updateWordCloud(data);
                   updateTable(data);
+                  updateMap(data);
                   hideLoadingModal();
               } else {
                   console.error('Fetch error:', xhr.statusText);
@@ -284,6 +292,7 @@
       console.log("FILTER");
       await updateWordCloud(data);
       await updateTable(data);
+      await updateMap(data);
       // await anotherGraphUpdate();
     }
 
@@ -299,9 +308,9 @@
     // });
 
     var wc = new wordCloud([]);
-    f = filter();
-    m = new map();
-    t = new table([]);
+    var f = filter();
+    var m = new map();
+    var t = new table([]);
     alc = new areaLineChart();
     lc = new lineChart();
     checkDataAndLoad()
