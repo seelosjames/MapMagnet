@@ -142,13 +142,14 @@
       let allTokens = data.flatMap((document) => document.Tokens);
       let tokenCounts = {};
       allTokens.forEach((token) => {
+        if (!["program", "work", "duty"].includes(token))
           tokenCounts[token] = (tokenCounts[token] || 0) + 1;
       });
 
       let maxCount = Math.max(...Object.values(tokenCounts));
       let containerWidth = document.getElementById('top-container-left').clientWidth;
       let containerHeight = document.getElementById('top-container-left').clientHeight;
-      var maxFontSize = Math.min(containerWidth, containerHeight) * 0.1;
+      var maxFontSize = Math.min(containerWidth, containerHeight) * 0.15;
       let wordCloudData = Object.entries(tokenCounts)
         .map(([token, count]) => ({
           "word": token,
@@ -156,7 +157,7 @@
           "size": (count / maxCount) * maxFontSize,
         }))
         .sort((a, b) => b.count - a.count) // Sort by count in descending order
-        .slice(0, 20); // Take the top 20 words
+        .slice(0, 30); // Take the top 20 words
       wc.updateWordCloud(wordCloudData);
     }
 
@@ -172,20 +173,18 @@
       try {
         const storedData = await db.myDataStore.toArray();
 
-        if (storedData.length > 0) {
-          // Data is already present, use the local copy
-          // console.log('Using locally stored data:', storedData[0]);
-          data = await db.myDataStore.toArray();
-          updateWordCloud(data);
-          updateTable(data);
-          updateMap(data);
-        } else {
-          // Data is not present, fetch from the API
+        if (storedData.length <= 0) {
+          // If data is already present, use the local copy, else fetch it
           await fetchDataFromAPI();
+        } else {
+          showLoadingModal()
+
           data = await db.myDataStore.toArray();
-          updateWordCloud(data)
-          updateTable(data);
-          updateMap(data);
+          await updateWordCloud(data);
+          await updateTable(data);
+          await m.setupMap(data);
+          
+          hideLoadingModal();
         }
       } catch (error) {
         console.error('Error checking data:', error);
@@ -222,9 +221,9 @@
 
                   console.log('Data fetched and stored:', data);
                   data = await db.myDataStore.toArray();
-                  updateWordCloud(data);
-                  updateTable(data);
-                  updateMap(data);
+                  await updateWordCloud(data);
+                  await updateTable(data);
+                  await m.setupMap(data);
                   hideLoadingModal();
               } else {
                   console.error('Fetch error:', xhr.statusText);
@@ -263,7 +262,7 @@
     }
 
     async function filterJobsByDepartment(data, department) {
-      return data.filter(item => {
+        data.filter(item => {
         return item.department == department;
       })
     }
@@ -315,10 +314,17 @@
     }
 
     async function filterJobsByLocation(data, location) {
-      return data.filter(item => {
-          // Check if any JobCategory Code matches the target codes
-          return item.PositionLocation.some(l => l.CountrySubDivisionCode == location);
-      })
+      if (location.city === "None") {
+        return data.filter(item => {
+            // Check if any JobCategory Code matches the target codes
+            return item.PositionLocation.some(l => l.CountrySubDivisionCode == location.state);
+        })
+      } else if (location.city !== "None") {
+        return data.filter(item => {
+            // Check if any JobCategory Code matches the target codes
+            return item.PositionLocation.some(l => l.CityName == location.city + ", " + location.state);
+        })
+      }
     }
 
     async function filterJobsByTravel(data, travel) {
@@ -334,22 +340,45 @@
     }
 
     async function applyFilters(filters) {
+      showLoadingModal()
+
       data = db.myDataStore;
       // categories = [] // Get the list of selected categories
       // data = await filterJobsByCategoryCodes(data, categories);
 
       // data = await filterJobsByPositionTitle(data, filters.position);
-      data = await filterJobsByRemote(data, filters.remote);
+      if (filters.department !== "None")
+        data = await filterJobsByDepartment(data, filters.department);
+      if (filters.remote !== "None")
+        data = await filterJobsByRemote(data, filters.remote);
+      // if (filters.telework !== "None")
+      //   data = await filterJobsByTelework(data, filters.telework);
+      // if (filters.location.state !== "None")
+      //   data = await filterJobsByLocation(data, filters.location)
+      // if (filters.schedule !== "None")
+      //   data = await filterJobsBySchedule(data, filters.schedule)
+      // if (filters.travel !== "None")
+      //   data = await filterJobsByTravel(data, filters.travel)
 
       // if (title !== "")
       //   data = await filterJobsByPositionTitle(data, title);
-
+      console.log(filters)
+      if (filters.location.state !== "None") {
+        data = await filterJobsByLocation(data, filters.location)
+      }
+      console.log("location")
+      console.log(await data.toArray())
       data = await data.toArray();
+      console.log("FINISHED FILTERING")
+      console.log(data)
       m.updateMap(data);
       t.updateTable(data);
+      updateWordCloud(data);
       // await updateMap(data);
       // await anotherGraphUpdate();
-    }
+
+      hideLoadingModal();
+      }
 
     function filterJobs(filters) {
       lc.filterJobs(filters);

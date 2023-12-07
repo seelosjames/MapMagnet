@@ -124,7 +124,7 @@ function filter() {
   filterForm.appendChild(maxSalarySelect);
 
   const minSalary = 0;
-  const maxSalary = 120000;
+  const maxSalary = 450000;
   const increment = 5000;
 
   for (let salary = minSalary; salary <= maxSalary; salary += increment) {
@@ -182,14 +182,14 @@ function filter() {
     const selectedFilters = {
       department: departmentSelect.value,
       position:"adfasdf", 
-      location: locationSelect.value,
+      location: {"state": locationSelect.value, "city": "None"},
       minSalary: parseInt(minSalarySelect.value, 10),
       maxSalary: parseInt(maxSalarySelect.value, 10),
       schedule: scheduleSelect.value,
       travel: travelSelect.value,
       remote: remoteCheckbox.checked,
       telework: teleworkCheckbox.checked,
-      // relocation: relocationReimbursementCheckbox.checked,
+      relocation: relocationReimbursementCheckbox.checked,
     };
     // filterJobs(selectedFilters);
     return selectedFilters;
