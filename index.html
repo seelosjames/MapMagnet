@@ -433,13 +433,12 @@
 
     // If you're gonna click a button to apply filters, then
     var button = document.createElement('button');
-    button.innerText = 'Click me';
+    button.innerText = 'Filter';
     button.addEventListener('click', async () => {
       event.preventDefault();
       applyFilters(f.onFilterChange());
     });
-    var formDiv = document.getElementById('bottom-container-left');
-    formDiv.appendChild(button);
+    
 
 
     var wc = new wordCloud([]);
@@ -449,6 +448,9 @@
     var lc = new lineChart({});
     checkDataAndLoad()
     var f = new filter();
+    
+    var formDiv = document.getElementById('bottom-container-left');
+    formDiv.appendChild(button);
   </script>
 
 </body>
