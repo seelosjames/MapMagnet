@@ -82,8 +82,8 @@ function wordCloud(data) {
 
     // Function to update the word cloud with new data
     function updateWordCloud(newData) {
-        console.log("NEW DATA")
-        console.log(newData)
+        // console.log("NEW DATA")
+        // console.log(newData)
         layout.words(newData.map(function (d) { return { text: d.word, size: d.size }; }));
         layout.start();
     }

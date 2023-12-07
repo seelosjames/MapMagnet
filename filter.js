@@ -5,6 +5,22 @@ function filter() {
   const filterForm = document.createElement('form');
   filterBox.appendChild(filterForm);
 
+  // data = [{"id":"585167300","PositionTitle":"Information and Arts Family",
+  // "PositionURI":"https://www.usajobs.gov:443/GetJob/ViewDetails/585167300",
+  // "PositionLocationDisplay":"Location Negotiable After Selection, United States",
+  // "PositionLocation":[
+  //   {"LocationName":"Albuquerque, New Mexico","CountryCode":"United States","CountrySubDivisionCode":"New Mexico","CityName":"Albuquerque, New Mexico","Longitude":-106.649,"Latitude":35.0842},
+  //   {"LocationName":"Oklahoma City, Oklahoma","CountryCode":"United States","CountrySubDivisionCode":"Oklahoma","CityName":"Oklahoma City, Oklahoma","Longitude":-97.52033,"Latitude":35.472004},{"LocationName":"Portland, Oregon","CountryCode":"United States","CountrySubDivisionCode":"Oregon","CityName":"Portland, Oregon","Longitude":-122.67563,"Latitude":45.511795},{"LocationName":"Kansas City, Missouri","CountryCode":"United States","CountrySubDivisionCode":"Missouri","CityName":"Kansas City, Missouri","Longitude":-94.58306,"Latitude":39.10296},
+  //   {"LocationName":"Chicago, Illinois","CountryCode":"United States","CountrySubDivisionCode":"Illinois","CityName":"Chicago, Illinois","Longitude":-87.63241,"Latitude":41.88415},{"LocationName":"Denver, Colorado","CountryCode":"United States","CountrySubDivisionCode":"Colorado","CityName":"Denver, Colorado","Longitude":-104.992256,"Latitude":39.74001},{"LocationName":"Washington, District of Columbia","CountryCode":"United States","CountrySubDivisionCode":"District of Columbia","CityName":"Washington, District of Columbia","Longitude":-77.032,"Latitude":38.8904},{"LocationName":"Atlanta, Georgia","CountryCode":"United States","CountrySubDivisionCode":"Georgia","CityName":"Atlanta, Georgia","Longitude":-84.39111,"Latitude":33.748314},{"LocationName":"Minneapolis, Minnesota","CountryCode":"United States","CountrySubDivisionCode":"Minnesota","CityName":"Minneapolis, Minnesota","Longitude":-93.26493,"Latitude":44.979034},{"LocationName":"Seattle, Washington","CountryCode":"United States","CountrySubDivisionCode":"Washington","CityName":"Seattle, Washington","Longitude":-122.32945,"Latitude":47.60358},{"LocationName":"Los Angeles, California","CountryCode":"United States","CountrySubDivisionCode":"California","CityName":"Los Angeles, California","Longitude":-118.245,"Latitude":34.0535},{"LocationName":"Phoenix, Arizona","CountryCode":"United States","CountrySubDivisionCode":"Arizona","CityName":"Phoenix, Arizona","Longitude":-112.075775,"Latitude":33.44826},{"LocationName":"Indianapolis, Indiana","CountryCode":"United States","CountrySubDivisionCode":"Indiana","CityName":"Indianapolis, Indiana","Longitude":-86.14996,"Latitude":39.76691},
+  //   {"LocationName":"Miami, Florida","CountryCode":"United States","CountrySubDivisionCode":"Florida","CityName":"Miami, Florida","Longitude":-80.23742,"Latitude":25.728985},{"LocationName":"New York, New York","CountryCode":"United States","CountrySubDivisionCode":"New York","CityName":"New York, New York","Longitude":-74.0071,"Latitude":40.7146},{"LocationName":"New Orleans, Louisiana","CountryCode":"United States","CountrySubDivisionCode":"Louisiana","CityName":"New Orleans, Louisiana","Longitude":-90.07771,"Latitude":29.95369},{"LocationName":"Salt Lake City, Utah","CountryCode":"United States","CountrySubDivisionCode":"Utah","CityName":"Salt Lake City, Utah","Longitude":-111.88823,"Latitude":40.75952},{"LocationName":"San Francisco, California","CountryCode":"United States","CountrySubDivisionCode":"California","CityName":"San Francisco, California","Longitude":-122.4196,"Latitude":37.7771},{"LocationName":"Boston, Massachusetts","CountryCode":"United States","CountrySubDivisionCode":"Massachusetts","CityName":"Boston, Massachusetts","Longitude":-71.0567,"Latitude":42.358635},{"LocationName":"Austin, Texas","CountryCode":"United States","CountrySubDivisionCode":"Texas","CityName":"Austin, Texas","Longitude":-97.743,"Latitude":30.2676}
+  // ],"PositionSchedule":[{"Name":"Multiple Schedules","Code":"6"}],"OrganizationName":"Department of the Air Force - Agency Wide","DepartmentName":"Department of the Air Force","JobCategory":[{"Name":"General Arts And Information","Code":"1001"},{"Name":"Museum Curator","Code":"1015"},{"Name":"Public Affairs","Code":"1035"},{"Name":"Language Specialist","Code":"1040"},{"Name":"Visual Information","Code":"1084"}],"PositionRemuneration":[{"MinimumRange":"20172.0","MaximumRange":"146757.0","RateIntervalCode":"PA","Description":"Per Year"}],"PositionStartDate":"2022-11-30T00:00:00.0000","PositionEndDate":"2023-11-29T23:59:59.9970","TravelCode":"0","TravelPercentage":"Not required","TeleworkEligible":false,"RemoteIndicator":false,"Relocation":"False","Tokens":["art","language","curator","affair","general","family","museum","specialist","visual","additional","air","public","force","hire","please","opportunity","information","click","direct"]}]
+
+  // console.log(data);
+
+  // console.log(data.filter(item => {
+  //   console.log(item.PositionSchedule.some(s => s.Name))
+  //   return item.PositionSchedule.some(s => s.Name == "Multiple Schedules");
+  // }))
 
   // // Job Title
   // const titleLabel = document.createElement('label');
@@ -19,11 +35,14 @@ function filter() {
 
   // Department
   const departmentLabel = document.createElement('label');
-  departmentLabel.textContent = 'Hiring Department:';
+  departmentLabel.textContent = 'Department: ';
   filterForm.appendChild(departmentLabel);
 
   const departmentSelect = document.createElement('select');
-  const departmentOptions = ['None', 'Department 1', 'Department 2', 'Department 3'];
+  departmentSelect.setAttribute("id", "department")
+  const departmentOptions = ['None', 'Court Services and Offender Supervision Agency for DC', 'Department of Agriculture', 'Department of Commerce', 'Department of Defense', 'Department of Energy', 'Department of Health and Human Services', 'Department of Homeland Security'
+  , 'Department of Housing and Urban Development', 'Department of Justice', 'Department of Labor', 'Department of State', 'Department of Air Force', 'Department of Army', 'Department of Interior', 'Department of Navy', 'Department of Treasury', 'Department of Transportation', 'Department of Veterans Affairs'
+  , 'General Services Administration', 'Judicial Branch', 'Legislative Branch', 'NASA', 'National Foundation on the Arts and the Humanities', 'Other Agencies and Independent Organizations'];
   departmentOptions.forEach((option) => {
     const departmentOption = document.createElement('option');
     departmentOption.value = option;
@@ -34,35 +53,77 @@ function filter() {
   filterForm.appendChild(document.createElement('br')); // New line
 
 
-  // // Grade
-  // const gradeLabel = document.createElement('label');
-  // gradeLabel.textContent = 'Grade:';
-  // filterForm.appendChild(gradeLabel);
+  // Location
+  const locationLabel = document.createElement('label');
+  locationLabel.textContent = 'Location: ';
+  filterForm.appendChild(locationLabel);
 
-  // const minGradeInput = document.createElement('input');
-  // minGradeInput.type = 'text';
-  // minGradeInput.placeholder = 'Min';
-  // filterForm.appendChild(minGradeInput);
+  const locationSelect = document.createElement('select');
+  const locationOptions = ["None","Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana",
+    "Iowa","Kansas","Kentucky","Louisiana", "Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada",
+    "New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina",
+    "South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"
+  ];
+  locationOptions.forEach((option) => {
+    const locationOption = document.createElement('option');
+    locationOption.value = option;
+    locationOption.text = option;
+    locationSelect.appendChild(locationOption);
+  });
+  filterForm.appendChild(locationSelect);
+  filterForm.appendChild(document.createElement('br')); // New line
 
-  // const maxGradeInput = document.createElement('input');
-  // maxGradeInput.type = 'text';
-  // maxGradeInput.placeholder = 'Max';
-  // filterForm.appendChild(maxGradeInput);
-  // filterForm.appendChild(document.createElement('br')); // New line
+
+  // Schedule
+  const scheduleLabel = document.createElement('label');
+  scheduleLabel.textContent = 'Schedule: ';
+  filterForm.appendChild(scheduleLabel);
+
+  const scheduleSelect = document.createElement('select');
+  scheduleSelect.setAttribute("id", "schedule")
+  const scheduleOptions = ["None", "Full-time", "Part-time", "Shift work", "Intermittent", "Job sharing", "Multiple schedules"];
+  scheduleOptions.forEach((option) => {
+    const scheduleOption = document.createElement('option');
+    scheduleOption.value = option;
+    scheduleOption.text = option;
+    scheduleSelect.appendChild(scheduleOption);
+  });
+  filterForm.appendChild(scheduleSelect);
+  filterForm.appendChild(document.createElement('br')); // New line
+
+
+    // Travel
+    const travelLabel = document.createElement('label');
+    travelLabel.textContent = 'Travel: ';
+    filterForm.appendChild(travelLabel);
+  
+    const travelSelect = document.createElement('select');
+    travelSelect.setAttribute("id", "travel")
+    const travelOptions = ["None", "Not required", "Occasional travel", "25% or less", "50% or less", "75% or less", "76% or greater"];
+    travelOptions.forEach((option) => {
+      const travelOption = document.createElement('option');
+      travelOption.value = option;
+      travelOption.text = option;
+      travelSelect.appendChild(travelOption);
+    });
+    filterForm.appendChild(travelSelect);
+    filterForm.appendChild(document.createElement('br')); // New line
 
 
   // Salary
   const salaryLabel = document.createElement('label');
-  salaryLabel.textContent = 'Salary:';
+  salaryLabel.textContent = 'Salary: ';
   filterForm.appendChild(salaryLabel);
 
   const minSalarySelect = document.createElement('select');
+  minSalarySelect.setAttribute("id", "minSalary")
   filterForm.appendChild(minSalarySelect);
 
   const maxSalarySelect = document.createElement('select');
+  maxSalarySelect.setAttribute("id", "maxSalary")
   filterForm.appendChild(maxSalarySelect);
 
-  const minSalary = 60000;
+  const minSalary = 0;
   const maxSalary = 120000;
   const increment = 5000;
 
@@ -83,20 +144,22 @@ function filter() {
   filterForm.appendChild(document.createElement('br')); // New line
 
   // Security Clearance
-  const securityClearanceLabel = document.createElement('label');
-  securityClearanceLabel.textContent = "Security";
-  const securityClearanceCheckbox = document.createElement('input');
-  securityClearanceCheckbox.type = 'checkbox';
-  filterForm.appendChild(securityClearanceLabel);
-  filterForm.appendChild(securityClearanceCheckbox);
+  const remoteLabel = document.createElement('label');
+  remoteLabel.textContent = "Remote: ";
+  const remoteCheckbox = document.createElement('input');
+  remoteCheckbox.type = 'checkbox';
+  remoteCheckbox.setAttribute("id", "remote")
+  filterForm.appendChild(remoteLabel);
+  filterForm.appendChild(remoteCheckbox);
   filterForm.appendChild(document.createElement('br')); // New line
   // var securityState = False;
 
 
   // Telework
   const teleworkLabel = document.createElement('label');
-  teleworkLabel.textContent = "Telework";
+  teleworkLabel.textContent = "Telework: ";
   const teleworkCheckbox = document.createElement('input');
+  teleworkCheckbox.setAttribute("id", "telework")
   teleworkCheckbox.type = 'checkbox';
   filterForm.appendChild(teleworkLabel);
   filterForm.appendChild(teleworkCheckbox);
@@ -105,7 +168,7 @@ function filter() {
 
   // Relocation Reimbursement
   const relocationReimbursementLabel = document.createElement('label');
-  relocationReimbursementLabel.textContent = "Relocation";
+  relocationReimbursementLabel.textContent = "Relocation: ";
   const relocationReimbursementCheckbox = document.createElement('input');
   relocationReimbursementCheckbox.type = 'checkbox';
   filterForm.appendChild(relocationReimbursementLabel);
@@ -113,48 +176,24 @@ function filter() {
   filterForm.appendChild(document.createElement('br')); // New line
 
 
-  var myButton = document.createElement("button");
-  myButton.id = "mybutton";
-  myButton.textContent = "Click me!";
-  myButton.addEventListener("click", function() {
-    // Your code to be executed when the button is clicked
-    alert("Button Clicked!");
-  });
-  filterForm.appendChild(myButton);
-
-
-
-  // // Schedule
-  // const workScheduleLabel = document.createElement('label');
-  // workScheduleLabel.textContent = 'Work Schedule:';
-  // filterForm.appendChild(workScheduleLabel);
-  // const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-  // daysOfWeek.forEach((day) => {
-  //   const dayLabel = document.createElement('label');
-  //   dayLabel.textContent = day;
-
-  //   const dayCheckbox = document.createElement('input');
-  //   dayCheckbox.type = 'checkbox';
-
-  //   filterForm.appendChild(dayLabel);
-  //   filterForm.appendChild(dayCheckbox);
-  // });
-
-
-  function onFilterChange() {
+  this.onFilterChange = function() {
     // console.log()
 
     const selectedFilters = {
       department: departmentSelect.value,
+      position:"adfasdf", 
+      location: locationSelect.value,
       minSalary: parseInt(minSalarySelect.value, 10),
       maxSalary: parseInt(maxSalarySelect.value, 10),
-      securityClearance: securityClearanceCheckbox.checked,
+      schedule: scheduleSelect.value,
+      travel: travelSelect.value,
+      remote: remoteCheckbox.checked,
       telework: teleworkCheckbox.checked,
-      relocationReimbursement: relocationReimbursementCheckbox.checked,
+      // relocation: relocationReimbursementCheckbox.checked,
     };
-    filterJobs(selectedFilters);
-    applyFilters();
+    // filterJobs(selectedFilters);
+    return selectedFilters;
+    // applyFilters();
   }
 
   function salaryChange() {
@@ -172,11 +211,12 @@ function filter() {
   }
 
   // Add Event Listeners to the Filters
-  departmentSelect.addEventListener('change', onFilterChange);
-  minSalarySelect.addEventListener('change', salaryChange);
-  maxSalarySelect.addEventListener('change', salaryChange);
-  securityClearanceCheckbox.addEventListener('change', onFilterChange);
-  teleworkCheckbox.addEventListener('change', onFilterChange);
-  relocationReimbursementCheckbox.addEventListener('change', onFilterChange);
+  // departmentSelect.addEventListener('change', onFilterChange);
+  // locationSelect.addEventListener('change', onFilterChange);
+  // minSalarySelect.addEventListener('change', salaryChange);
+  // maxSalarySelect.addEventListener('change', salaryChange);
+  // remoteCheckbox.addEventListener('change', onFilterChange);
+  // teleworkCheckbox.addEventListener('change', onFilterChange);
+  // relocationReimbursementCheckbox.addEventListener('change', onFilterChange);
 
 }
