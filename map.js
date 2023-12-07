@@ -28,14 +28,14 @@ function map(data) {
         });
         mapdata['Virginia'] += mapdata['District of Columbia'];
         delete mapdata['District of Columbia']
-        console.log(mapdata);
+        // console.log(mapdata);
         return mapdata;
 
     }
 
 
     function updateMap(newData){
-        console.log('MAP');
+        // console.log('MAP');
         //console.log(newData);
         dataset = formatMapData(newData);
         // if(map && typeof map.destroy === 'function'){
@@ -59,7 +59,7 @@ function map(data) {
                 fips_dict[d.Code] = d.State;
             })
         });
-        console.log(fips_dict);
+        // console.log(fips_dict);
 
         d3.json("https://d3js.org/us-10m.v1.json").then(function(us) {
 
@@ -72,8 +72,8 @@ function map(data) {
                 .attr("fill", function(d){
                     let state = fips_dict[+d.id];
                     if (state !== undefined){
-                        console.log(state);
-                        console.log(dataset[state]);
+                        // console.log(state);
+                        // console.log(dataset[state]);
                         return colorScale(dataset[state]);
                     }
                 });

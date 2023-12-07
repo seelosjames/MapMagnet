@@ -176,7 +176,7 @@
 
         if (storedData.length > 0) {
           // Data is already present, use the local copy
-          console.log('Using locally stored data:', storedData[0]);
+          // console.log('Using locally stored data:', storedData[0]);
           data = await db.myDataStore.toArray();
           updateWordCloud(data);
           updateTable(data);
@@ -265,8 +265,14 @@
       })
     }
 
+    async function filterJobsByDepartment(data, department) {
+      return data.filter(item => {
+        return item.department == department;
+      })
+    }
+
     async function filterJobsByMinSalary(data, minSalary) {
-      data.filter(item => {
+      return data.filter(item => {
           // Check if any PositionRemuneration object has MinimumRange greater than minSalary
           return item.PositionRemuneration.some(remuneration => remuneration.MinimumRange > minSalary);
       }).toArray()
@@ -279,13 +285,63 @@
           });
     }
 
-    async function applyFilters() {
-      data = db.myDataStore;
+    async function filterJobsByMaxSalary(data, maxSalary) {
+      return data.filter(item => {
+          // Check if any PositionRemuneration object has MinimumRange greater than minSalary
+          return item.PositionRemuneration.some(remuneration => remuneration.MaximumRange < maxSalary);
+      }).toArray()
+          .then(filteredData => {
+              // Process the filtered data
+              console.log(filteredData);
+          })
+          .catch(error => {
+              console.error(error);
+          });
+    }
 
+    async function filterJobsByRemote(data, remote) {
+      return data.filter(item => {
+        return item.RemoteIndicator === remote
+      })
+    }
+
+    async function filterJobsByTelework(data, telework) {
+      return data.filter(item => {
+        return item.TeleworkEligible === telework
+      })
+    }
+
+    async function filterJobsByRelocation(data, relocation) {
+      return data.filter(item => {
+        return (item.Relocation == "False" ? false : true) === relocation
+      })
+    }
+
+    async function filterJobsByLocation(data, location) {
+      return data.filter(item => {
+          // Check if any JobCategory Code matches the target codes
+          return item.PositionLocation.some(l => l.CountrySubDivisionCode == location);
+      })
+    }
+
+    async function filterJobsByTravel(data, travel) {
+      return data.filter(item => {
+        return item.TravelPercentage == travel;
+      })
+    }
+
+    async function filterJobsBySchedule(data, schedule) {
+      return data.filter(item => {
+        return item.PositionSchedule.some(s => s.Name == schedule);
+      })
+    }
+
+    async function applyFilters(filters) {
+      data = db.myDataStore;
       categories = [] // Get the list of selected categories
       data = await filterJobsByCategoryCodes(data, categories);
-      title = "TITLE" // Get the text in the title text box
-      data = await filterJobsByPositionTitle(data, title);
+      data = await filterJobsByPositionTitle(data, filters.position);
+      data = await filterJobsByRemote(data, filters.remote);
 
 
       data = await data.toArray();
@@ -302,10 +358,15 @@
     }
 
     // If you're gonna click a button to apply filters, then
-    // document.getElementById('myButton').addEventListener('click', async () => {
-    //   // Call the async function when the button is clicked
-    //   await applyFilters();
-    // });
+    var button = document.createElement('button');
+    button.innerText = 'Click me';
+    button.addEventListener('click', async () => {
+      event.preventDefault();
+      console.log(onFilterChange());
+    });
+    var formDiv = document.getElementById('bottom-container-left');
+    formDiv.appendChild(button);
+
 
     var wc = new wordCloud([]);
     var f = filter();
