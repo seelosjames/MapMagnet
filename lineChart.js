@@ -8,41 +8,53 @@ function lineChart() {
     var svg;
 
     //Read the data
-    d3.json("test_data/data.json").then(
-        function(dataset) {
-            data = dataset.jobs;
 
-            // console.log(data)
+    this.createLineChart = function(dataset) {
 
-            // append the svg object to the body of the page
-            svg = d3.select("#top-container-right")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", "100%")
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        data = dataset;
+        data.sort(sortByDate);
 
-            // Create X axis
-            x = d3.scaleTime()
-            .domain([
-                new Date(data[0].year, 0, 1), 
-                new Date(data[data.length - 1].year, 0, 1)
-            ])
-            .range([ 1, width ]);
-            xAxis = d3.axisBottom().scale(x);
-            svg.append("g") 
-            .attr("transform", "translate(0," + height + ")")
-            .attr("class","myXaxis");
+        // console.log(data);
 
-            // Create Y axis
-            y = d3.scaleLinear().range([ height, 0 ]);
-            yAxis = d3.axisLeft().scale(y);
-            svg.append("g")
-            .attr("class","myYaxis");
+        // append the svg object to the body of the page
+        svg = d3.select("#top-container-right")
+        .append("svg")
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            update(data)
-        }
-    );
+        // console.log(new Date(d3.min(data, function(date) {
+        //     console.log(date.month)
+        //     return new Date(Date.parse(date.month));
+        //   })))
+
+        // Create X axis
+        x = d3.scaleTime()
+        .domain([
+            new Date(d3.min(dataset, function(date) {
+                // console.log(date.month)
+                return new Date(Date.parse(date.month));
+            })),
+            new Date(d3.max(dataset, function(date) {
+                // console.log(date.month)
+                return new Date(Date.parse(date.month));
+            }))
+        ])
+        .range([ 1, width ]);
+        xAxis = d3.axisBottom().scale(x);
+        svg.append("g") 
+        .attr("transform", "translate(0," + height + ")")
+        .attr("class","myXaxis");
+
+        // Create Y axis
+        y = d3.scaleLinear().range([ height, 0 ]);
+        yAxis = d3.axisLeft().scale(y);
+        svg.append("g")
+        .attr("class","myYaxis");
+
+        update(data)
+    }
 
     function update(dataset) {
 
@@ -52,14 +64,17 @@ function lineChart() {
         .duration(1000)
         .call(xAxis);
 
+        // console.log(dataset)
+
         // Update Y axis
         y.domain([d3.min(dataset, 
             function(d) {
-                return d.jobs.length
+                // console.log(d.count)
+                return d.count
             }
         ), d3.max(dataset, 
             function(d) {
-                return d.jobs.length
+                return d.count
             }
         )])
         svg.selectAll(".myYaxis")
@@ -79,30 +94,22 @@ function lineChart() {
         .transition()
         .duration(1000)
         .attr("d", d3.line()
-        .x(function(d) { return x(new Date(d.year, 0, 1)) })
-        .y(function(d) { return y(d.jobs.length) }))
+        .x(function(d) { return x(new Date(Date.parse(d.month))) })
+        .y(function(d) { return y(d.count) }))
         .attr("fill", "none")
         .attr("stroke", "steelblue")
         .attr("stroke-width", 2.5)
     }
     
     this.filterJobs = function(filters) {
-        var temp = [];
+        console.log(filters)
+        filters.sort(sortByDate);        
+        update(filters);
+    };
 
-        data.forEach(element => {
-            temp.push({"year": element.year, "jobs": element.jobs.filter(job => {
-                return (
-                    (!filters.department || job.department === filters.department || filters.department === 'None') &&
-                    (!filters.location || job.location === filters.location || filters.location === 'None') &&
-                    (!filters.minSalary || job.salary >= filters.minSalary) &&
-                    (!filters.maxSalary || job.salary <= filters.maxSalary) &&
-                    (!filters.securityClearance || job.securityClearance === filters.securityClearance) &&
-                    (!filters.telework || job.telework === filters.telework) &&
-                    (!filters.relocationReimbursement || job.relocationReimbursement === filters.relocationReimbursement)
-                );
-            })})
-        });
-        
-        update(temp);
+    function sortByDate(a, b) {
+        var dateA = new Date(a.month + " 1");
+        var dateB = new Date(b.month + " 1");
+        return dateA - dateB;
     };
 }

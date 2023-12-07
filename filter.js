@@ -48,7 +48,7 @@ function filter() {
     const uniqueDepartmentNames = new Set(allData.map(item => item.DepartmentName));
     const departmentOptions = Array.from(uniqueDepartmentNames);
     departmentOptions.forEach((option) => {
-      console.log(option)
+      // console.log(option)
       const departmentOption = document.createElement('option');
       departmentOption.value = option;
       departmentOption.text = option;

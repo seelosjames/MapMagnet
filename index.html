@@ -169,9 +169,18 @@
       m.updateMap(data);
     }
 
+    async function createLineChart(data) {
+      lc.createLineChart(data);
+    }
+
+    async function createAreaLineChart(data) {
+      alc.createAreaLineChart(data);
+    }
+
     async function checkDataAndLoad() {
       try {
         const storedData = await db.myDataStore.toArray();
+        const historic = await getHistoricData({});
 
         if (storedData.length <= 0) {
           // If data is already present, use the local copy, else fetch it
@@ -183,7 +192,8 @@
           await updateWordCloud(data);
           await updateTable(data);
           await m.setupMap(data);
-          
+          await createLineChart(historic);
+          await createAreaLineChart(historic);
           hideLoadingModal();
         }
       } catch (error) {
@@ -340,6 +350,7 @@
     }
 
     async function getHistoricData(filters) {
+      // console.log(filters)
       const apiHistoryUrl = "http://129.123.62.7:8000/history"
       try {
         const response = await fetch(apiHistoryUrl, {
@@ -400,13 +411,15 @@
         data = await filterJobsByLocation(data, filters.location)
       }
 
-      console.log(historyFilters)
+      // console.log(historyFilters)
       const historicData = await getHistoricData(historyFilters)
-      console.log(historicData)
+      // console.log(historicData)
 
       data = await data.toArray();
       t.updateTable(data);
       updateWordCloud(data);
+      lc.filterJobs(historicData);
+      alc.filterJobs(historicData)
       // await updateMap(data);
       // await anotherGraphUpdate();
 
@@ -433,7 +446,7 @@
     var m = new map();
     var t = new table([]);
     alc = new areaLineChart();
-    lc = new lineChart();
+    var lc = new lineChart({});
     checkDataAndLoad()
     var f = new filter();
   </script>

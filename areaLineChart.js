@@ -6,57 +6,48 @@ function areaLineChart() {
     var data = [];
     var x, xAxis, y, yAxis;
     var svg;
-    var max = [];
-    var min = [];
-    var mean = [];
 
+    this.createAreaLineChart = function(dataset) {
+        data = dataset;
+        data.sort(sortByDate);
+        console.log(data);
 
-
-    //Read the data
-    d3.json("test_data/data.json").then(
-        function(dataset) {
-            data = dataset.jobs;
-
-            // console.log(data)
-
-            // append the svg object to the body of the page
-            svg = d3.select("#bottom-container-right")
+        svg = d3.select("#bottom-container-right")
             .append("svg")
             .attr("width", "100%")
             .attr("height", "100%")
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            // Get max, min, and mean salary for each year
-            data.forEach(function(d) {
-                max.push(d3.max(d.jobs, function(j) { return j.salary; }));
-                min.push(d3.min(d.jobs, function(j) { return j.salary; }));
-                mean.push(d3.mean(d.jobs, function(j) { return j.salary; }));
-            })
 
-            // Create X scale
-            x = d3.scaleTime()
-            .domain([
-                new Date(data[0].year, 0, 1), 
-                new Date(data[data.length - 1].year, 0, 1)
-            ])
-            .range([ 1, width ]);
-            xAxis = d3.axisBottom().scale(x);
-            svg.append("g") 
-            .attr("transform", "translate(0," + height + ")")
-            .attr("class","myXaxis");
+        // Create X scale
+        x = d3.scaleTime()
+        .domain([
+            new Date(d3.min(dataset, function(date) {
+                // console.log(date.month)
+                return new Date(Date.parse(date.month));
+            })),
+            new Date(d3.max(dataset, function(date) {
+                // console.log(date.month)
+                return new Date(Date.parse(date.month));
+            }))
+        ])
+        .range([ 1, width ]);
+        xAxis = d3.axisBottom().scale(x);
+        svg.append("g") 
+        .attr("transform", "translate(0," + height + ")")
+        .attr("class","myXaxis");
 
-            // Create Y scale
-            y = d3.scaleLinear().range([ height, 0 ]);
-            yAxis = d3.axisLeft().scale(y);
+        // Create Y scale
+        y = d3.scaleLinear().range([ height, 0 ]);
+        yAxis = d3.axisLeft().scale(y);
 
-            // Place Y Axis
-            svg.append("g")
-            .attr("class","myYaxis");
+        // Place Y Axis
+        svg.append("g")
+        .attr("class","myYaxis");
 
-            update(data);
-        }
-    );
+        update(data);
+    }
 
     function update(dataset) {
 
@@ -67,7 +58,14 @@ function areaLineChart() {
         .call(xAxis);
 
         // Update Y axis
-        y.domain([d3.min(min), d3.max(max)]);
+        y.domain([
+            d3.min(dataset, function(d) {
+                return d.minSalary
+            }), 
+            d3.max(dataset, function(d) {
+                return d.averageMaxSalary + 10000
+            })
+        ]);
         svg.selectAll(".myYaxis")
         .transition()
         .duration(1000)
@@ -83,9 +81,9 @@ function areaLineChart() {
         .transition()
         .duration(1000)
         .attr("d", d3.area()
-            .x(function(d) { return x(new Date(d.year, 0, 1)) })
-            .y0(function(d, i) { return (y(min[i]) + y(mean[i])) / 2})
-            .y1(function(d, i) { return (y(max[i]) + y(mean[i])) / 2})
+            .x(function(d) { return x(new Date(Date.parse(d.month))) })
+            .y0(function(d) { return y(d.averageMinSalary) })
+            .y1(function(d) { return y(d.averageMaxSalary) })
         )
         .attr("fill", "#cce5df")
         .attr("stroke", "none");
@@ -100,8 +98,8 @@ function areaLineChart() {
         .transition()
         .duration(1000)
         .attr("d", d3.line()
-        .x(function(d) { return x(new Date(d.year, 0, 1)) })
-        .y(function(d, i) { return y(mean[i]) })
+        .x(function(d) { return x(new Date(Date.parse(d.month))) })
+        .y(function(d) { return y((d.averageMaxSalary + d.averageMinSalary) / 2) })
         )
         .attr("fill", "none")
         .attr("stroke", "steelblue")
@@ -109,31 +107,14 @@ function areaLineChart() {
     }
 
     this.filterJobs = function(filters) {
-        var temp = [];
+        console.log(filters)
+        filters.sort(sortByDate);        
+        update(filters);
+    };
 
-        data.forEach(element => {
-            temp.push({"year": element.year, "jobs": element.jobs.filter(job => {
-                return (
-                    (!filters.department || job.department === filters.department || filters.department === 'None') &&
-                    (!filters.minSalary || job.salary >= filters.minSalary) &&
-                    (!filters.maxSalary || job.salary <= filters.maxSalary) &&
-                    (!filters.securityClearance || job.securityClearance === filters.securityClearance) &&
-                    (!filters.telework || job.telework === filters.telework) &&
-                    (!filters.relocationReimbursement || job.relocationReimbursement === filters.relocationReimbursement)
-                );
-            })})
-        });
-
-        // Update max, min, and mean salary for each year
-        max = [];
-        min = [];
-        mean = [];        
-        temp.forEach(function(d) {
-            max.push(d3.max(d.jobs, function(j) { return j.salary; }));
-            min.push(d3.min(d.jobs, function(j) { return j.salary; }));
-            mean.push(d3.mean(d.jobs, function(j) { return j.salary; }));
-        })
-
-        update(temp);
+    function sortByDate(a, b) {
+        var dateA = new Date(a.month + " 1");
+        var dateB = new Date(b.month + " 1");
+        return dateA - dateB;
     };
 }
