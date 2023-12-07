@@ -1,6 +1,6 @@
 function lineChart() {
     // set the dimensions and margins of the graph
-    var margin = {top: 10, right: 45, bottom: 40, left: 45};
+    var margin = {top: 10, right: 35, bottom: 40, left: 45};
     var width = document.getElementById('bottom-container-right').clientWidth - margin.left - margin.right;
     var height = document.getElementById('bottom-container-right').clientHeight - margin.top - margin.bottom;
     var data = [];
@@ -42,7 +42,7 @@ function lineChart() {
             }))
         ])
         .range([ 1, width ]);
-        xAxis = d3.axisBottom().scale(x);
+        xAxis = d3.axisBottom().scale(x).tickFormat(d3.timeFormat("%b %y"));
         svg.append("g") 
         .attr("transform", "translate(0," + height + ")")
         .attr("class","myXaxis");
