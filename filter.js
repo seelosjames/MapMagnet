@@ -40,26 +40,31 @@ function filter() {
 
   const departmentSelect = document.createElement('select');
   departmentSelect.setAttribute("id", "department")
-  const departmentOptions = ['None', 'Court Services and Offender Supervision Agency for DC', 'Department of Agriculture', 'Department of Commerce', 'Department of Defense', 'Department of Energy', 'Department of Health and Human Services', 'Department of Homeland Security'
-  , 'Department of Housing and Urban Development', 'Department of Justice', 'Department of Labor', 'Department of State', 'Department of Air Force', 'Department of Army', 'Department of Interior', 'Department of Navy', 'Department of Treasury', 'Department of Transportation', 'Department of Veterans Affairs'
-  , 'General Services Administration', 'Judicial Branch', 'Legislative Branch', 'NASA', 'National Foundation on the Arts and the Humanities', 'Other Agencies and Independent Organizations'];
-  departmentOptions.forEach((option) => {
-    const departmentOption = document.createElement('option');
-    departmentOption.value = option;
-    departmentOption.text = option;
-    departmentSelect.appendChild(departmentOption);
-  });
-  filterForm.appendChild(departmentSelect);
-  filterForm.appendChild(document.createElement('br')); // New line
-
-
+  const departmentOption = document.createElement('option');
+  departmentOption.value = "None";
+  departmentOption.text = "None";
+  departmentSelect.appendChild(departmentOption);
+  db.myDataStore.toArray().then(allData => {
+    const uniqueDepartmentNames = new Set(allData.map(item => item.DepartmentName));
+    const departmentOptions = Array.from(uniqueDepartmentNames);
+    departmentOptions.forEach((option) => {
+      console.log(option)
+      const departmentOption = document.createElement('option');
+      departmentOption.value = option;
+      departmentOption.text = option;
+      departmentSelect.appendChild(departmentOption);
+    });
+    departmentLabel.appendChild(departmentSelect);
+    departmentLabel.appendChild(document.createElement('br')); // New line
+  })
+  
   // Location
   const locationLabel = document.createElement('label');
   locationLabel.textContent = 'Location: ';
   filterForm.appendChild(locationLabel);
 
   const locationSelect = document.createElement('select');
-  const locationOptions = ["None","Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana",
+  const locationOptions = ["None","Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware", "District of Columbia", "Florida","Georgia","Hawaii","Idaho","Illinois","Indiana",
     "Iowa","Kansas","Kentucky","Louisiana", "Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada",
     "New Hampshire","New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina",
     "South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming"
@@ -149,6 +154,16 @@ function filter() {
   const remoteCheckbox = document.createElement('input');
   remoteCheckbox.type = 'checkbox';
   remoteCheckbox.setAttribute("id", "remote")
+  remoteCheckbox.indeterminate = true
+  remoteCheckbox.addEventListener('click', () => {
+    if (remoteCheckbox.indeterminate) {
+      remoteCheckbox.checked = true;
+    } else if (remoteCheckbox.checked) {
+      remoteCheckbox.checked = false;
+    } else {
+      remoteCheckbox.indeterminate = true;
+    }
+  });
   filterForm.appendChild(remoteLabel);
   filterForm.appendChild(remoteCheckbox);
   filterForm.appendChild(document.createElement('br')); // New line
@@ -161,6 +176,16 @@ function filter() {
   const teleworkCheckbox = document.createElement('input');
   teleworkCheckbox.setAttribute("id", "telework")
   teleworkCheckbox.type = 'checkbox';
+  teleworkCheckbox.indeterminate = true
+  teleworkCheckbox.addEventListener('click', () => {
+    if (teleworkCheckbox.indeterminate) {
+      teleworkCheckbox.checked = true;
+    } else if (teleworkCheckbox.checked) {
+      teleworkCheckbox.checked = false;
+    } else {
+      teleworkCheckbox.indeterminate = true;
+    }
+  });
   filterForm.appendChild(teleworkLabel);
   filterForm.appendChild(teleworkCheckbox);
   filterForm.appendChild(document.createElement('br')); // New line
@@ -171,6 +196,16 @@ function filter() {
   relocationReimbursementLabel.textContent = "Relocation: ";
   const relocationReimbursementCheckbox = document.createElement('input');
   relocationReimbursementCheckbox.type = 'checkbox';
+  relocationReimbursementCheckbox.indeterminate = true
+  relocationReimbursementCheckbox.addEventListener('click', () => {
+    if (relocationReimbursementCheckbox.indeterminate) {
+      relocationReimbursementCheckbox.checked = true;
+    } else if (relocationReimbursementCheckbox.checked) {
+      relocationReimbursementCheckbox.checked = false;
+    } else {
+      relocationReimbursementCheckbox.indeterminate = true;
+    }
+  });
   filterForm.appendChild(relocationReimbursementLabel);
   filterForm.appendChild(relocationReimbursementCheckbox);
   filterForm.appendChild(document.createElement('br')); // New line
@@ -187,9 +222,9 @@ function filter() {
       maxSalary: parseInt(maxSalarySelect.value, 10),
       schedule: scheduleSelect.value,
       travel: travelSelect.value,
-      remote: remoteCheckbox.checked,
-      telework: teleworkCheckbox.checked,
-      relocation: relocationReimbursementCheckbox.checked,
+      remote: remoteCheckbox.indeterminate ? null : remoteCheckbox.checked,
+      telework: teleworkCheckbox.indeterminate ? null : teleworkCheckbox.checked,
+      relocation: relocationReimbursementCheckbox.indeterminate ? null : relocationReimbursementCheckbox.checked,
     };
     // filterJobs(selectedFilters);
     return selectedFilters;

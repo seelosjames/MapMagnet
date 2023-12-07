@@ -262,8 +262,8 @@
     }
 
     async function filterJobsByDepartment(data, department) {
-        data.filter(item => {
-        return item.department == department;
+        return data.filter(item => {
+          return item.DepartmentName == department;
       })
     }
 
@@ -339,39 +339,72 @@
       })
     }
 
+    async function getHistoricData(filters) {
+      const apiHistoryUrl = "http://129.123.62.7:8000/history"
+      try {
+        const response = await fetch(apiHistoryUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(filters),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        return responseData
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
     async function applyFilters(filters) {
       showLoadingModal()
-
+      historyFilters = {}
       data = db.myDataStore;
       // categories = [] // Get the list of selected categories
       // data = await filterJobsByCategoryCodes(data, categories);
 
       // data = await filterJobsByPositionTitle(data, filters.position);
-      if (filters.department !== "None")
+      if (filters.department !== "None") {
+        historyFilters["department"] = filters.department
         data = await filterJobsByDepartment(data, filters.department);
-      if (filters.remote !== "None")
+      }
+      if (filters.remote !== null) {
         data = await filterJobsByRemote(data, filters.remote);
-      // if (filters.telework !== "None")
-      //   data = await filterJobsByTelework(data, filters.telework);
-      // if (filters.location.state !== "None")
-      //   data = await filterJobsByLocation(data, filters.location)
-      // if (filters.schedule !== "None")
-      //   data = await filterJobsBySchedule(data, filters.schedule)
-      // if (filters.travel !== "None")
-      //   data = await filterJobsByTravel(data, filters.travel)
+      }
+      if (filters.telework !== null) {
+        historyFilters["telework"] = filters.telework
+        data = await filterJobsByTelework(data, filters.telework);
+      }
+      if (filters.schedule !== "None") {
+        historyFilters["schedule"] = [filters.schedule]
+        data = await filterJobsBySchedule(data, filters.schedule)
+      }
+      if (filters.travel !== "None") {
+        historyFilters["travel"] = [filters.travel]
+        data = await filterJobsByTravel(data, filters.travel)
+      }
 
-      // if (title !== "")
-      //   data = await filterJobsByPositionTitle(data, title);
-      console.log(filters)
+      preLocation = await data.toArray()
+      m.updateMap(preLocation);
+
       if (filters.location.state !== "None") {
+        historyFilters["location"] = {"state": filters.location.state}
+        if (filters.location.city !== "None") {
+          historyFilters["location"]["city"] = filters.location.city 
+        }
         data = await filterJobsByLocation(data, filters.location)
       }
-      console.log("location")
-      console.log(await data.toArray())
+
+      console.log(historyFilters)
+      const historicData = await getHistoricData(historyFilters)
+      console.log(historicData)
+
       data = await data.toArray();
-      console.log("FINISHED FILTERING")
-      console.log(data)
-      m.updateMap(data);
       t.updateTable(data);
       updateWordCloud(data);
       // await updateMap(data);
@@ -397,12 +430,12 @@
 
 
     var wc = new wordCloud([]);
-    var f = new filter();
     var m = new map();
     var t = new table([]);
     alc = new areaLineChart();
     lc = new lineChart();
     checkDataAndLoad()
+    var f = new filter();
   </script>
 
 </body>

@@ -82,6 +82,8 @@ function map(data) {
     }
 
     function reset() {
+        let filts = f.onFilterChange();
+        applyFilters(filts);
         states.transition().style("fill", null);
         svgMap.selectAll('circle').remove();
         svgMap.transition().duration(750).call(
@@ -123,7 +125,6 @@ function map(data) {
         create_reset();
 
         currentZoomState = d3.zoomTransform(svgMap.node());
-        console.log(currentZoomState)
 
         svgMap.transition().duration(750).call(
             zoom.transform,
@@ -137,26 +138,19 @@ function map(data) {
     }
 
     function formatMapData(data) {
-        var mapdata = {};
-
-        data.forEach(function(d) {
-            var loc_len = d.PositionLocation.length;
-            //console.log(loc_len);
-            for(let i = 0; i < loc_len; i++) {
-                let state = d.PositionLocation[i].CountrySubDivisionCode;
-                //console.log(state);
-                if (state == undefined) {
-                    continue;
+        let mapdata = {};
+        data.forEach(item => {
+            const uniqueCodesInItem = new Set();
+            item.PositionLocation.forEach(location => {
+                const state = location.CountrySubDivisionCode;
+          
+                // Update the count for the current CountrySubDivisionCode
+                if (!uniqueCodesInItem.has(state)) {
+                    mapdata[state] = (mapdata[state] || 0) + 1;
+                    uniqueCodesInItem.add(state);
                 }
-                else if (mapdata[state] == undefined) {
-                    mapdata[state] = 1;
-                }
-                else{
-                    mapdata[state]++;
-                }
-
-            }
-        });
+            });
+          });
         return mapdata;
 
     }
@@ -166,9 +160,15 @@ function map(data) {
         d3.select('map').remove();
         rawData = data
         dataset = formatMapData(data);
+        var values = Object.values(dataset);
+        let diff = (d3.max(values) - 0)/(7 + 1);
+        let legendScale = [];
+        for (let i = 0; i <= 7; i++)
+            legendScale.push(diff * (i + 1) + 0);
 
+        // Update the color scale based on the new data
         var colorScale = d3.scaleLinear()
-            .domain([0, 5000, 10000, 15000, 20000, 25000, 30000])
+            .domain(legendScale) // Adjust the domain based on your data
             .range(d3.schemeBlues[7]);
 
         svgMap = d3.select("#middle-column").append("svg")
@@ -192,13 +192,13 @@ function map(data) {
                 .selectAll("path")
                 .data(topojson.feature(us, us.objects.states).features)
                 .enter().append("path")
-                .attr("fill", function(d){
+            states.attr("fill", function(d){
                     let state = fips_dict[+d.id];
                     if (state !== undefined){
                         return colorScale(dataset[state]);
                     }
                 })
-                .join("path")
+            states.join("path")
                 .on("click", clicked)
                 .attr("d", path)
                 .append("title")
@@ -212,26 +212,29 @@ function map(data) {
                 .attr("d", path(topojson.mesh(us, us.objects.states, (a,b) => a !== b)));
             //svgMap.call(zoom);
         });
-
         return svgMap.node();
     }
 
     this.updateMap = function(newData) {
         rawData = newData
         dataset = formatMapData(newData);
-        console.log("DATA MAP " + JSON.stringify(newData))
-    
+        var values = Object.values(dataset);
         // Update the color scale based on the new data
+        let diff = (d3.max(values) - 0)/(7 + 1);
+        let legendScale = [];
+        for (let i = 0; i <= 7; i++)
+            legendScale.push(diff * (i + 1) + 0);
         var colorScale = d3.scaleLinear()
-            .domain([0, 5000, 10000, 15000, 20000, 25000, 30000])
+            .domain(legendScale) // Adjust the domain based on your data
             .range(d3.schemeBlues[7]);
-    
+        
         // Update the fill attribute of the map paths
         states.attr("fill", function (d) {
             let state = fips_dict[+d.id];
             if (state !== undefined) {
                 return colorScale(dataset[state]);
             }
+            return colorScale(0);
         });
     
         // Update the title attribute of the map paths
