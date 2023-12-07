@@ -58,7 +58,7 @@ function table(data) {
           tooltip:true,         //show tool tips on cells
       },
       columns:[                 //define the table columns
-        {title:"ID", field:"id"},
+        {title:"ID", field:"ID"},
         {title:"Position Title", field:"Position Title", headerFilter:"input"},
         {title:"Department", field:"Department", headerFilter:"list", headerFilterParams:{values:{"Court Services and Offender Supervision Agency for DC":"Court Services and Offender Supervision Agency for DC", 'Department of Agriculture':'Department of Agriculture', 'Department of Commerce':'Department of Commerce', 'Department of Defense':'Department of Defense', 'Department of Energy':'Department of Energy', 'Department of Health and Human Services':'Department of Health and Human Services', 'Department of Homeland Security':'Department of Homeland Security'
         , 'Department of Housing and Urban Development':'Department of Housing and Urban Development', 'Department of Justice':'Department of Justice', 'Department of Labor':'Department of Labor', 'Department of State':'Department of State', 'Department of Air Force':'Department of Air Force', 'Department of Army':'Department of Army', 'Department of Interior':'Department of Interior', 'Department of Navy':'Department of Navy', 'Department of Treasury':'Department of Treasury', 'Department of Transportation':'Department of Transportation', 'Department of Veterans Affairs':'Department of Veterans Affairs'
